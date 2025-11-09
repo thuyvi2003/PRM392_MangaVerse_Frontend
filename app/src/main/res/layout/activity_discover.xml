@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_light"
+    tools:context=".DiscoverActivity">
+
+    <!-- Fixed Toolbar -->
+    <include layout="@layout/layout_toolbar" 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="4dp" />
+
+    <!-- Scrollable Content -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="56dp"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="100dp">
+
+            <!-- Search Bar -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="24dp"
+                android:paddingVertical="12dp"
+                android:background="@color/background_light">
+
+                <EditText
+                    android:id="@+id/etSearchDiscover"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/bg_search_bar"
+                    android:drawableStart="@drawable/ic_search"
+                    android:drawablePadding="12dp"
+                    android:hint="Search books..."
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:textSize="14sp"
+                    android:textColorHint="#999999"
+                    android:inputType="text" />
+            </LinearLayout>
+
+            <!-- Category Tabs -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:paddingHorizontal="24dp"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="8dp"
+                        android:backgroundTint="@color/primary"
+                        android:text="@string/all_books"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        app:cornerRadius="20dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="8dp"
+                        android:text="@string/genre"
+                        android:textAllCaps="false"
+                        android:textColor="@color/primary"
+                        android:textSize="14sp"
+                        app:cornerRadius="20dp"
+                        app:strokeColor="@color/border_color" />
+
+                    <com.google.android.material.button.MaterialButton
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="8dp"
+                        android:text="@string/authors"
+                        android:textAllCaps="false"
+                        android:textColor="@color/primary"
+                        android:textSize="14sp"
+                        app:cornerRadius="20dp"
+                        app:strokeColor="@color/border_color" />
+
+                    <com.google.android.material.button.MaterialButton
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="8dp"
+                        android:text="@string/new_label"
+                        android:textAllCaps="false"
+                        android:textColor="@color/primary"
+                        android:textSize="14sp"
+                        app:cornerRadius="20dp"
+                        app:strokeColor="@color/border_color" />
+
+                    <com.google.android.material.button.MaterialButton
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:text="@string/top_rated"
+                        android:textAllCaps="false"
+                        android:textColor="@color/primary"
+                        android:textSize="14sp"
+                        app:cornerRadius="20dp"
+                        app:strokeColor="@color/border_color" />
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <!-- Books Grid -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/booksRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:clipToPadding="false"
+                tools:listitem="@layout/item_book" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Bottom Navigation -->
+    <include layout="@layout/layout_bottom_navigation" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

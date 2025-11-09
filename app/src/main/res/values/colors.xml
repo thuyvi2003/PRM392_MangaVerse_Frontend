@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    
+    <!-- Custom Colors -->
+    <color name="primary">#7EA9FE
+    </color>
+    <color name="background_light">#F5FAFF</color>
+    <color name="background_dark">#101c22</color>
+    <color name="manga_blue">#a3c4f3</color>
+    <color name="manga_blue_light">#e8f1ff</color>
+    <color name="text_dark">#333333</color>
+    <color name="text_light">#757575</color>
+    <color name="border_color">#E0E0E0</color>
+    <color name="input_bg">#FFFFFF</color>
+    
+    <!-- Discover Screen Colors -->
+    <color name="primary_darker">#4682B4</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="on_surface">#4A4A4A</color>
+    <color name="gray_400">#9CA3AF</color>
+    <color name="gray_500">#6B7280</color>
+    
+    <!-- Reader Screen Colors -->
+    <color name="ui_light_accent">#E3E8EE</color>
+    <color name="text_light_primary">#2C3E50</color>
+    <color name="sepia_bg">#FBF5E9</color>
+    <color name="sepia_text">#5A4628</color>
+    <color name="dark_bg">#101C22</color>
+    <color name="dark_text">#E0E6EB</color>
+</resources>
