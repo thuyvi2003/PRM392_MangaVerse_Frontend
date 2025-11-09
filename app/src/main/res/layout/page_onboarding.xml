@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingHorizontal="24dp">
+
+    <!-- Icon Circle -->
+    <FrameLayout
+        android:layout_width="192dp"
+        android:layout_height="192dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/circle_white_bg">
+
+        <ImageView
+            android:id="@+id/imgIcon"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/welcome_icon_desc"
+            app:tint="@color/manga_blue" />
+    </FrameLayout>
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:paddingHorizontal="16dp"
+        android:textAlignment="center"
+        android:textColor="@color/text_dark"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:lineSpacingMultiplier="1.2" />
+
+    <!-- Description -->
+    <TextView
+        android:id="@+id/tvDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:maxWidth="400dp"
+        android:paddingHorizontal="16dp"
+        android:textAlignment="center"
+        android:textColor="@color/text_light"
+        android:textSize="16sp"
+        android:lineSpacingMultiplier="1.4" />
+
+</LinearLayout>
