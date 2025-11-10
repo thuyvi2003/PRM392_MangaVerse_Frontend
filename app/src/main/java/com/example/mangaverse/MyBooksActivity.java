@@ -55,13 +55,11 @@ public class MyBooksActivity extends AppCompatActivity {
 
     private void initViews() {
         rvMyBooks = findViewById(R.id.rvMyBooks);
-
         // Tabs
         tabReadingNow = findViewById(R.id.tabReadingNow);
         tabMyFavourites = findViewById(R.id.tabMyFavourites);
         tabToRead = findViewById(R.id.tabToRead);
         btnAddNew = findViewById(R.id.btnAddNew);
-
         // Search
         etSearch = findViewById(R.id.etSearch);
     }
@@ -94,7 +92,6 @@ public class MyBooksActivity extends AppCompatActivity {
         mangaList = new ArrayList<>();
         allMangaList = new ArrayList<>();
         mangaAdapter = new MangaAdapter(this, mangaList);
-
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         rvMyBooks.setLayoutManager(gridLayoutManager);
         rvMyBooks.setAdapter(mangaAdapter);
@@ -103,7 +100,6 @@ public class MyBooksActivity extends AppCompatActivity {
             Toast.makeText(this, "Clicked: " + manga.getTitle(), Toast.LENGTH_SHORT).show();
             // Navigate to manga detail or reader activity
         });
-
         // Setup search
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -123,7 +119,6 @@ public class MyBooksActivity extends AppCompatActivity {
         tabReadingNow.setOnClickListener(v -> selectTab("reading_now"));
         tabMyFavourites.setOnClickListener(v -> selectTab("favourites"));
         tabToRead.setOnClickListener(v -> selectTab("to_read"));
-
         btnAddNew.setOnClickListener(v -> {
             Toast.makeText(this, "Add new manga", Toast.LENGTH_SHORT).show();
             // TODO: Open add manga dialog or activity
@@ -132,7 +127,6 @@ public class MyBooksActivity extends AppCompatActivity {
 
     private void selectTab(String tab) {
         currentTab = tab;
-
         // Reset all tabs
         tabReadingNow.setBackgroundResource(android.R.color.transparent);
         tabReadingNow.setTextColor(getResources().getColor(android.R.color.white));
@@ -164,7 +158,6 @@ public class MyBooksActivity extends AppCompatActivity {
                 tabToRead.setTypeface(null, android.graphics.Typeface.BOLD);
                 break;
         }
-
         loadMangaData();
     }
 
@@ -176,7 +169,6 @@ public class MyBooksActivity extends AppCompatActivity {
     private void loadMangaData() {
         mangaList.clear();
         allMangaList.clear();
-
         switch (currentTab) {
             case "reading_now":
                 // Reading Now data
@@ -186,21 +178,18 @@ public class MyBooksActivity extends AppCompatActivity {
                 allMangaList.add(new Manga("4", "Naruto", "", 8.7, 700, "Action", false));
                 allMangaList.add(new Manga("5", "Liar Game", "", 8.8, 201, "Psychological", false));
                 break;
-
             case "favourites":
                 // Favourites data
                 allMangaList.add(new Manga("6", "Attack on Titan", "", 9.2, 139, "Action", false));
                 allMangaList.add(new Manga("7", "Death Note", "", 9.0, 108, "Thriller", false));
                 allMangaList.add(new Manga("8", "Fullmetal Alchemist", "", 9.1, 116, "Adventure", false));
                 break;
-
             case "to_read":
                 // To Read data
                 allMangaList.add(new Manga("9", "Demon Slayer", "", 8.9, 205, "Action", false));
                 allMangaList.add(new Manga("10", "Jujutsu Kaisen", "", 8.8, 150, "Action", false));
                 break;
         }
-
         mangaList.addAll(allMangaList);
         mangaAdapter.notifyDataSetChanged();
         etSearch.setText(""); // Clear search when switching tabs
@@ -220,7 +209,6 @@ public class MyBooksActivity extends AppCompatActivity {
                 }
             }
         }
-
         mangaAdapter.notifyDataSetChanged();
     }
 

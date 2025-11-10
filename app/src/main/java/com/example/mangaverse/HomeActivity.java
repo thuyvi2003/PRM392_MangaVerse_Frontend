@@ -23,7 +23,6 @@ import com.example.mangaverse.utils.ToolbarHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class HomeActivity extends AppCompatActivity {
 
     private RecyclerView rvNewChapters, rvTrending;
@@ -34,7 +33,6 @@ public class HomeActivity extends AppCompatActivity {
     private BannerAdapter bannerAdapter;
     private List<Banner> bannerList;
     private View dot1, dot2, dot3;
-
     private Handler autoScrollHandler;
     private Runnable autoScrollRunnable;
     private boolean isUserInteracting = false;
@@ -66,12 +64,10 @@ public class HomeActivity extends AppCompatActivity {
         rvNewChapters = findViewById(R.id.rvNewChapters);
         rvTrending = findViewById(R.id.rvTrending);
         bannerViewPager = findViewById(R.id.bannerViewPager);
-
         // Dots indicator
         dot1 = findViewById(R.id.dot1);
         dot2 = findViewById(R.id.dot2);
         dot3 = findViewById(R.id.dot3);
-
         // Category tabs
         tabBrowse = findViewById(R.id.tabBrowse);
         tabLiked = findViewById(R.id.tabLiked);
@@ -160,7 +156,6 @@ public class HomeActivity extends AppCompatActivity {
                 super.onPageSelected(position);
                 updateDots(position);
             }
-
             @Override
             public void onPageScrollStateChanged(int state) {
                 super.onPageScrollStateChanged(state);
@@ -181,7 +176,6 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(this, "Read " + banner.getTitle(), Toast.LENGTH_SHORT).show();
             // Navigate to manga reader
         });
-
         // Bắt đầu auto scroll
         startAutoScroll();
     }
@@ -194,12 +188,10 @@ public class HomeActivity extends AppCompatActivity {
         dot3.setBackgroundTintList(android.content.res.ColorStateList.valueOf(
                 position == 2 ? 0xFFFFFFFF : 0x80FFFFFF));
     }
-
     private void startAutoScroll() {
         if (autoScrollHandler == null) {
             autoScrollHandler = new Handler(Looper.getMainLooper());
         }
-
         if (autoScrollRunnable == null) {
             autoScrollRunnable = new Runnable() {
                 @Override
@@ -229,50 +221,41 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(this, "Calendar clicked", Toast.LENGTH_SHORT).show();
             // TODO: Open calendar activity
         });
-
         // Genre buttons
         genreRomantic.setOnClickListener(v -> {
             Toast.makeText(this, "Romantic genre selected", Toast.LENGTH_SHORT).show();
             // TODO: Filter by Romantic genre
         });
-
         genreAdventure.setOnClickListener(v -> {
             Toast.makeText(this, "Adventure genre selected", Toast.LENGTH_SHORT).show();
             // TODO: Filter by Adventure genre
         });
-
         genreFiction.setOnClickListener(v -> {
             Toast.makeText(this, "Fiction genre selected", Toast.LENGTH_SHORT).show();
             // TODO: Filter by Fiction genre
         });
-
         genreFantasy.setOnClickListener(v -> {
             Toast.makeText(this, "Fantasy genre selected", Toast.LENGTH_SHORT).show();
             // TODO: Filter by Fantasy genre
         });
-
         genreComedy.setOnClickListener(v -> {
             Toast.makeText(this, "Comedy genre selected", Toast.LENGTH_SHORT).show();
             // TODO: Filter by Comedy genre
         });
-
         genreDrama.setOnClickListener(v -> {
             Toast.makeText(this, "Drama genre selected", Toast.LENGTH_SHORT).show();
             // TODO: Filter by Drama genre
         });
-
         genreHorror.setOnClickListener(v -> {
             Toast.makeText(this, "Horror genre selected", Toast.LENGTH_SHORT).show();
             // TODO: Filter by Horror genre
         });
     }
-
     @Override
     protected void onPause() {
         super.onPause();
         stopAutoScroll(); // Dừng auto scroll khi app bị pause
     }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -283,7 +266,6 @@ public class HomeActivity extends AppCompatActivity {
             startAutoScroll();
         }
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -321,7 +303,6 @@ public class HomeActivity extends AppCompatActivity {
         newChaptersList.add(new Manga("4", "One Piece", "", 9.0, 1000, "Adventure", false));
         newChaptersList.add(new Manga("5", "Naruto", "", 8.7, 700, "Action", false));
         newChaptersAdapter.notifyDataSetChanged();
-
         // Load Trending data - 5 items
         trendingList.clear();
         trendingList.add(new Manga("6", "Apple Black", "", 8.5, 80, "Fantasy", false));
