@@ -1,142 +1,107 @@
 package com.example.mangaverse;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.TextPaint;
-import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.card.MaterialCardView;
+import com.example.mangaverse.api.ApiService;
+import com.example.mangaverse.api.RetrofitClient;
+import com.example.mangaverse.model.auth.AuthResponse;
+import com.example.mangaverse.model.auth.RegisterRequest;
+import com.example.mangaverse.LoginActivity;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AuthActivity extends AppCompatActivity {
 
-    private EditText etEmail, etPassword;
+    private EditText etName, etPhone, etUsername, etEmail, etPassword;
     private Button btnCreateAccount;
     private TextView tvLoginLink;
-    private MaterialCardView btnGoogleLogin, btnAppleLogin;
-    private View btnAddPhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
 
-        // Hide action bar
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().hide();
-        }
-
-        initViews();
-        setupClickListeners();
-        setupLoginLink();
-    }
-
-    private void initViews() {
+        // Ánh xạ View
+        etName = findViewById(R.id.etName);
+        etPhone = findViewById(R.id.etPhone);
+        etUsername = findViewById(R.id.etUsername);
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         btnCreateAccount = findViewById(R.id.btnCreateAccount);
+
         tvLoginLink = findViewById(R.id.tvLoginLink);
-        btnGoogleLogin = findViewById(R.id.btnGoogleLogin);
-        btnAppleLogin = findViewById(R.id.btnAppleLogin);
-        btnAddPhoto = findViewById(R.id.btnAddPhoto);
-    }
+        tvLoginLink.setOnClickListener(v -> navigateToLogin());
 
-    private void setupClickListeners() {
-        btnCreateAccount.setOnClickListener(v -> handleCreateAccount());
-        
-        btnAddPhoto.setOnClickListener(v -> {
-            Toast.makeText(this, "Add photo feature coming soon", Toast.LENGTH_SHORT).show();
-        });
-
-        btnGoogleLogin.setOnClickListener(v -> {
-            Toast.makeText(this, "Google login coming soon", Toast.LENGTH_SHORT).show();
-            navigateToDiscover();
-        });
-
-        btnAppleLogin.setOnClickListener(v -> {
-            Toast.makeText(this, "Apple login coming soon", Toast.LENGTH_SHORT).show();
-            navigateToDiscover();
-        });
-    }
-
-    private void setupLoginLink() {
-        String text = "Already have an account? Log In";
-        SpannableString spannableString = new SpannableString(text);
-        
-        ClickableSpan clickableSpan = new ClickableSpan() {
-            @Override
-            public void onClick(@NonNull View widget) {
-                navigateToLogin();
-            }
-
-            @Override
-            public void updateDrawState(@NonNull TextPaint ds) {
-                super.updateDrawState(ds);
-                ds.setColor(getResources().getColor(R.color.primary, null));
-                ds.setUnderlineText(false);
-            }
-        };
-
-        spannableString.setSpan(clickableSpan, text.indexOf("Log In"), text.length(), 
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        
-        tvLoginLink.setText(spannableString);
-        tvLoginLink.setMovementMethod(LinkMovementMethod.getInstance());
-    }
-
-    private void handleCreateAccount() {
-        String email = etEmail.getText().toString().trim();
-        String password = etPassword.getText().toString().trim();
-
-        // Basic validation
-        if (email.isEmpty()) {
-            etEmail.setError("Email is required");
-            etEmail.requestFocus();
-            return;
-        }
-
-        if (password.isEmpty()) {
-            etPassword.setError("Password is required");
-            etPassword.requestFocus();
-            return;
-        }
-
-        if (password.length() < 6) {
-            etPassword.setError("Password must be at least 6 characters");
-            etPassword.requestFocus();
-            return;
-        }
-
-        // TODO: Implement actual account creation logic
-        Toast.makeText(this, "Account created successfully!", Toast.LENGTH_SHORT).show();
-        navigateToDiscover();
+        btnCreateAccount.setOnClickListener(v -> performRegister());
     }
 
     private void navigateToLogin() {
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(AuthActivity.this, LoginActivity.class);
         startActivity(intent);
         finish();
     }
 
-    private void navigateToDiscover() {
-        Intent intent = new Intent(this, DiscoverActivity.class);
-        startActivity(intent);
-        finish();
+    private void performRegister() {
+        String name = etName.getText().toString().trim();
+        String phone = etPhone.getText().toString().trim();
+        String username = etUsername.getText().toString().trim();
+        String email = etEmail.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
+
+        // Kiểm tra dữ liệu bắt buộc (Backend yêu cầu name, username, email, password)
+        if (name.isEmpty() || username.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Vui lòng điền đầy đủ các trường bắt buộc.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        btnCreateAccount.setEnabled(false); // Ngăn click kép
+
+        // Tạo Request Body
+        RegisterRequest registerData = new RegisterRequest(name, phone, username, email, password);
+        ApiService apiService = RetrofitClient.getApiService();
+
+        apiService.registerUser(registerData)
+                .enqueue(new Callback<AuthResponse>() {
+                    @Override
+                    public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
+                        btnCreateAccount.setEnabled(true);
+
+                        if (response.isSuccessful() && response.body() != null) {
+                            String token = response.body().getToken();
+                            saveToken(token);
+                            Toast.makeText(AuthActivity.this, "Đăng ký thành công! Đã đăng nhập.", Toast.LENGTH_LONG).show();
+
+                            // Chuyển sang màn hình chính
+                            startActivity(new Intent(AuthActivity.this, MainActivity.class));
+                            finish();
+                        } else {
+                            // Backend trả về lỗi 400 nếu User/Email đã tồn tại
+                            Toast.makeText(AuthActivity.this, "Đăng ký thất bại: Tài khoản/Email đã tồn tại.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<AuthResponse> call, Throwable t) {
+                        btnCreateAccount.setEnabled(true);
+                        Toast.makeText(AuthActivity.this, "Lỗi kết nối Server: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 
-    private void navigateToMain() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
+    private void saveToken(String token) {
+        SharedPreferences sharedPref = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("JWT_TOKEN", token);
+        editor.apply();
     }
 }

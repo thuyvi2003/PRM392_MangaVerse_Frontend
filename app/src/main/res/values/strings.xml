@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MangaVerse</string>
     <string name="title_home">Home</string>
@@ -8,16 +9,18 @@
     <string name="title_settings">Settings</string>
 
 
-    <!-- Onboarding Screen -->
     <string name="skip">Skip</string>
     <string name="next">Next</string>
     <string name="get_started">Get Started</string>
     <string name="welcome_title">Welcome to Your Personal Library</string>
     <string name="welcome_description">Carry all your favorite books with you, right in your pocket. Start building your collection today.</string>
     <string name="welcome_icon_desc">Onboarding icon</string>
-    
-    <!-- Auth Screen -->
+
     <string name="create_account_title">Create Your Account</string>
+
+    <string name="full_name">Full Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="username">Username</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="create_account">Create Account</string>
@@ -27,15 +30,13 @@
     <string name="add_photo">Add profile photo</string>
     <string name="google_login">Login with Google</string>
     <string name="apple_login">Login with Apple</string>
-    
-    <!-- Login Screen -->
+
     <string name="welcome_back">Welcome Back</string>
     <string name="login_subtitle">Login to continue reading</string>
     <string name="login">Login</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="dont_have_account">Don\'t have an account? Sign Up</string>
-    
-    <!-- Discover Screen -->
+
     <string name="discover">Discover</string>
     <string name="search_hint">Search title, author...</string>
     <string name="all_books">All Books</string>
@@ -45,11 +46,9 @@
     <string name="top_rated">Top Rated</string>
     <string name="my_books">My Books</string>
     <string name="settings">Settings</string>
-    
-    <!-- Menu -->
+
     <string name="reset_onboarding">Reset Onboarding (Test)</string>
-    
-    <!-- Reader Screen -->
+
     <string name="back">Back</string>
     <string name="bookmark">Bookmark</string>
     <string name="table_of_contents">Table of Contents</string>
@@ -63,8 +62,7 @@
     <string name="font_style">Font Style</string>
     <string name="serif">Serif</string>
     <string name="sans_serif">Sans-serif</string>
-    
-    <!-- Settings Screen -->
+
     <string name="appearance">APPEARANCE</string>
     <string name="reading">READING</string>
     <string name="general">GENERAL</string>

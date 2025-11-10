@@ -1,12 +1,14 @@
 package com.example.mangaverse.utils;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mangaverse.R;
+import com.example.mangaverse.ProfileActivity;
 
 public class ToolbarHelper {
 
@@ -45,12 +47,12 @@ public class ToolbarHelper {
             }
         });
 
-        // Profile button
         btnProfile.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onProfileClick();
             } else {
-                Toast.makeText(activity, "Profile clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(activity, ProfileActivity.class);
+                activity.startActivity(intent);
             }
         });
     }

@@ -3,12 +3,9 @@ package com.example.mangaverse;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import androidx.viewpager2.widget.ViewPager2;
@@ -26,6 +23,7 @@ import com.example.mangaverse.utils.ToolbarHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class HomeActivity extends AppCompatActivity {
 
     private RecyclerView rvNewChapters, rvTrending;
@@ -36,7 +34,7 @@ public class HomeActivity extends AppCompatActivity {
     private BannerAdapter bannerAdapter;
     private List<Banner> bannerList;
     private View dot1, dot2, dot3;
-    
+
     private Handler autoScrollHandler;
     private Runnable autoScrollRunnable;
     private boolean isUserInteracting = false;
@@ -50,7 +48,6 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        // Hide action bar
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
@@ -69,20 +66,20 @@ public class HomeActivity extends AppCompatActivity {
         rvNewChapters = findViewById(R.id.rvNewChapters);
         rvTrending = findViewById(R.id.rvTrending);
         bannerViewPager = findViewById(R.id.bannerViewPager);
-        
+
         // Dots indicator
         dot1 = findViewById(R.id.dot1);
         dot2 = findViewById(R.id.dot2);
         dot3 = findViewById(R.id.dot3);
-        
+
         // Category tabs
         tabBrowse = findViewById(R.id.tabBrowse);
         tabLiked = findViewById(R.id.tabLiked);
         tabRanking = findViewById(R.id.tabRanking);
-        
+
         // Calendar link
         tvCalendar = findViewById(R.id.tvCalendar);
-        
+
         // Genre buttons
         genreRomantic = findViewById(R.id.genreRomantic);
         genreAdventure = findViewById(R.id.genreAdventure);
@@ -110,7 +107,9 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onProfileClick() {
                 Toast.makeText(HomeActivity.this, "Profile clicked", Toast.LENGTH_SHORT).show();
-                // TODO: Open profile activity
+
+                Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -119,9 +118,9 @@ public class HomeActivity extends AppCompatActivity {
         // Setup New Chapters RecyclerView
         newChaptersList = new ArrayList<>();
         newChaptersAdapter = new MangaAdapter(this, newChaptersList);
-        
-        androidx.recyclerview.widget.LinearLayoutManager newChaptersLayoutManager = 
-            new androidx.recyclerview.widget.LinearLayoutManager(this, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false);
+
+        androidx.recyclerview.widget.LinearLayoutManager newChaptersLayoutManager =
+                new androidx.recyclerview.widget.LinearLayoutManager(this, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false);
         rvNewChapters.setLayoutManager(newChaptersLayoutManager);
         rvNewChapters.setAdapter(newChaptersAdapter);
 
@@ -129,13 +128,13 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(this, "Clicked: " + manga.getTitle(), Toast.LENGTH_SHORT).show();
             // Navigate to manga detail or reader activity
         });
-        
+
         // Setup Trending RecyclerView
         trendingList = new ArrayList<>();
         trendingAdapter = new MangaAdapter(this, trendingList);
-        
-        androidx.recyclerview.widget.LinearLayoutManager trendingLayoutManager = 
-            new androidx.recyclerview.widget.LinearLayoutManager(this, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false);
+
+        androidx.recyclerview.widget.LinearLayoutManager trendingLayoutManager =
+                new androidx.recyclerview.widget.LinearLayoutManager(this, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false);
         rvTrending.setLayoutManager(trendingLayoutManager);
         rvTrending.setAdapter(trendingAdapter);
 
@@ -161,7 +160,7 @@ public class HomeActivity extends AppCompatActivity {
                 super.onPageSelected(position);
                 updateDots(position);
             }
-            
+
             @Override
             public void onPageScrollStateChanged(int state) {
                 super.onPageScrollStateChanged(state);
@@ -182,7 +181,7 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(this, "Read " + banner.getTitle(), Toast.LENGTH_SHORT).show();
             // Navigate to manga reader
         });
-        
+
         // Bắt đầu auto scroll
         startAutoScroll();
     }
@@ -195,12 +194,12 @@ public class HomeActivity extends AppCompatActivity {
         dot3.setBackgroundTintList(android.content.res.ColorStateList.valueOf(
                 position == 2 ? 0xFFFFFFFF : 0x80FFFFFF));
     }
-    
+
     private void startAutoScroll() {
         if (autoScrollHandler == null) {
             autoScrollHandler = new Handler(Looper.getMainLooper());
         }
-        
+
         if (autoScrollRunnable == null) {
             autoScrollRunnable = new Runnable() {
                 @Override
@@ -214,10 +213,10 @@ public class HomeActivity extends AppCompatActivity {
                 }
             };
         }
-        
+
         autoScrollHandler.postDelayed(autoScrollRunnable, 10000);
     }
-    
+
     private void stopAutoScroll() {
         if (autoScrollHandler != null && autoScrollRunnable != null) {
             autoScrollHandler.removeCallbacks(autoScrollRunnable);
@@ -230,50 +229,50 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(this, "Calendar clicked", Toast.LENGTH_SHORT).show();
             // TODO: Open calendar activity
         });
-        
+
         // Genre buttons
         genreRomantic.setOnClickListener(v -> {
             Toast.makeText(this, "Romantic genre selected", Toast.LENGTH_SHORT).show();
             // TODO: Filter by Romantic genre
         });
-        
+
         genreAdventure.setOnClickListener(v -> {
             Toast.makeText(this, "Adventure genre selected", Toast.LENGTH_SHORT).show();
             // TODO: Filter by Adventure genre
         });
-        
+
         genreFiction.setOnClickListener(v -> {
             Toast.makeText(this, "Fiction genre selected", Toast.LENGTH_SHORT).show();
             // TODO: Filter by Fiction genre
         });
-        
+
         genreFantasy.setOnClickListener(v -> {
             Toast.makeText(this, "Fantasy genre selected", Toast.LENGTH_SHORT).show();
             // TODO: Filter by Fantasy genre
         });
-        
+
         genreComedy.setOnClickListener(v -> {
             Toast.makeText(this, "Comedy genre selected", Toast.LENGTH_SHORT).show();
             // TODO: Filter by Comedy genre
         });
-        
+
         genreDrama.setOnClickListener(v -> {
             Toast.makeText(this, "Drama genre selected", Toast.LENGTH_SHORT).show();
             // TODO: Filter by Drama genre
         });
-        
+
         genreHorror.setOnClickListener(v -> {
             Toast.makeText(this, "Horror genre selected", Toast.LENGTH_SHORT).show();
             // TODO: Filter by Horror genre
         });
     }
-    
+
     @Override
     protected void onPause() {
         super.onPause();
         stopAutoScroll(); // Dừng auto scroll khi app bị pause
     }
-    
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -284,7 +283,7 @@ public class HomeActivity extends AppCompatActivity {
             startAutoScroll();
         }
     }
-    
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -322,7 +321,7 @@ public class HomeActivity extends AppCompatActivity {
         newChaptersList.add(new Manga("4", "One Piece", "", 9.0, 1000, "Adventure", false));
         newChaptersList.add(new Manga("5", "Naruto", "", 8.7, 700, "Action", false));
         newChaptersAdapter.notifyDataSetChanged();
-        
+
         // Load Trending data - 5 items
         trendingList.clear();
         trendingList.add(new Manga("6", "Apple Black", "", 8.5, 80, "Fantasy", false));

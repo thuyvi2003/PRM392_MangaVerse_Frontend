@@ -1,124 +1,88 @@
 package com.example.mangaverse;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.TextPaint;
-import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.card.MaterialCardView;
+import com.example.mangaverse.MainActivity;
+import com.example.mangaverse.R;
+import com.example.mangaverse.api.ApiService;
+import com.example.mangaverse.api.RetrofitClient;
+import com.example.mangaverse.model.auth.AuthResponse;
+import com.example.mangaverse.model.auth.LoginRequest;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
     private EditText etEmail, etPassword;
     private Button btnLogin;
-    private TextView tvSignupLink, tvForgotPassword;
-    private MaterialCardView btnGoogleLogin, btnAppleLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Hide action bar
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().hide();
-        }
-
-        initViews();
-        setupClickListeners();
-        setupSignupLink();
-    }
-
-    private void initViews() {
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
-        tvSignupLink = findViewById(R.id.tvSignupLink);
-        tvForgotPassword = findViewById(R.id.tvForgotPassword);
-        btnGoogleLogin = findViewById(R.id.btnGoogleLogin);
-        btnAppleLogin = findViewById(R.id.btnAppleLogin);
-    }
-
-    private void setupClickListeners() {
-        btnLogin.setOnClickListener(v -> handleLogin());
-
-        tvForgotPassword.setOnClickListener(v -> {
-            Toast.makeText(this, "Forgot password feature coming soon", Toast.LENGTH_SHORT).show();
-        });
-
-        btnGoogleLogin.setOnClickListener(v -> {
-            Toast.makeText(this, "Google login coming soon", Toast.LENGTH_SHORT).show();
-            navigateToHome();
-        });
-
-        btnAppleLogin.setOnClickListener(v -> {
-            Toast.makeText(this, "Apple login coming soon", Toast.LENGTH_SHORT).show();
-            navigateToHome();
-        });
-    }
-
-    private void setupSignupLink() {
-        String text = "Don't have an account? Sign Up";
-        SpannableString spannableString = new SpannableString(text);
         
-        ClickableSpan clickableSpan = new ClickableSpan() {
-            @Override
-            public void onClick(@NonNull View widget) {
-                navigateToAuth();
-            }
+        findViewById(R.id.tvSignupLink).setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, AuthActivity.class);
+            startActivity(intent);
+        });
 
-            @Override
-            public void updateDrawState(@NonNull TextPaint ds) {
-                super.updateDrawState(ds);
-                ds.setColor(getResources().getColor(R.color.primary, null));
-                ds.setUnderlineText(false);
-            }
-        };
-
-        spannableString.setSpan(clickableSpan, text.indexOf("Sign Up"), text.length(), 
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        
-        tvSignupLink.setText(spannableString);
-        tvSignupLink.setMovementMethod(LinkMovementMethod.getInstance());
+        btnLogin.setOnClickListener(v -> performLogin());
     }
 
-    private void handleLogin() {
-        // Không cần validation, bấm là vào thẳng
-        Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show();
-        navigateToHome();
+    private void performLogin() {
+        String email = etEmail.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
+
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Vui lòng nhập Email và Mật khẩu.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        LoginRequest loginData = new LoginRequest(email, password);
+        ApiService apiService = RetrofitClient.getApiService();
+
+        apiService.loginUser(loginData)
+                .enqueue(new Callback<AuthResponse>() {
+                    @Override
+                    public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            String token = response.body().getToken();
+                            saveToken(token);
+                            Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+
+                            // Chuyển sang màn hình chính
+                            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                            finish();
+                        } else {
+                            // Lỗi 401 hoặc 400
+                            Toast.makeText(LoginActivity.this, "Email hoặc Mật khẩu không đúng.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<AuthResponse> call, Throwable t) {
+                        Toast.makeText(LoginActivity.this, "Lỗi kết nối Server: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 
-    private void navigateToAuth() {
-        Intent intent = new Intent(this, AuthActivity.class);
-        startActivity(intent);
-    }
-
-    private void navigateToHome() {
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
-    private void navigateToDiscover() {
-        Intent intent = new Intent(this, DiscoverActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
-    private void navigateToMain() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
+    private void saveToken(String token) {
+        SharedPreferences sharedPref = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("JWT_TOKEN", token);
+        editor.apply();
     }
 }

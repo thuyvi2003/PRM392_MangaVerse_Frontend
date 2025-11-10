@@ -6,7 +6,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mangaverse.ui.settings.SettingsActivity;
+import com.example.mangaverse.ProfileActivity;
 import com.example.mangaverse.utils.BottomNavigationHelper;
 import com.example.mangaverse.utils.ToolbarHelper;
 
@@ -62,7 +62,9 @@ public class DiscoverActivity extends AppCompatActivity {
             @Override
             public void onProfileClick() {
                 Toast.makeText(DiscoverActivity.this, "Profile clicked", Toast.LENGTH_SHORT).show();
-                // TODO: Open profile activity
+
+                Intent intent = new Intent(DiscoverActivity.this, ProfileActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -113,10 +115,8 @@ public class DiscoverActivity extends AppCompatActivity {
         booksList.addAll(allBooksList);
         booksAdapter.notifyDataSetChanged();
     }
-    
     private void filterBooks(String query) {
         booksList.clear();
-        
         if (query.isEmpty()) {
             booksList.addAll(allBooksList);
         } else {
@@ -137,7 +137,6 @@ public class DiscoverActivity extends AppCompatActivity {
         BottomNavigationHelper.setupBottomNavigation(this, bottomNavView, "discover");
     }
 
-    // Book Model Class
     public static class Book {
         private String title;
         private String author;
